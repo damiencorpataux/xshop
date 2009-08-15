@@ -4,6 +4,8 @@
     <title>Next shop</title>
     <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
     <link rel="stylesheet" href="/shop/css/main.css" type="text/css" />
+    <script type="text/javascript" src="/shop/js/lib/ext-core/ext-core.js"></script>
+    <script type="text/javascript" src="/shop/js/lib/xshop/core.js"></script>
   </head>
   <body>
     <div id="wrapper">
@@ -31,9 +33,6 @@
         &copy; Next shop, tous droits réservés.
       </div>
     </div>
-    <script type="text/javascript" src="/shop/js/lib/ext-core/ext-core.js"></script>
-    <script type="text/javascript" src="/shop/js/lib/xshop/core.js"></script>
-    </script>
   </body>
 </html>
 

@@ -74,6 +74,10 @@ ol p, ul p {
   color: #666666;
 }
 
+img {
+  border: none;
+}
+
 img.thumbnail {
   background-color: white;
   border: 1px solid #CCCCCC;
