@@ -6,16 +6,14 @@ require_once(dirname(__file__).'/Template.php');
 class View {
 
     /*
-     * Composing views
-     */
-    var $views = array();
-
-    /*
      * Buffering string
      */
     var $buffer = '';
+    
+    var $params = array();
 
-    function __construct() {
+    function __construct($params = array()) {
+        $this->params = $params;
     }
     
     function handle() {
@@ -25,18 +23,18 @@ class View {
     /*
      * Returns the string display of the given view name
      */
-    function fetch($name) {
-        return $this->load($name)->get();
+    function fetch($name, $params = null) {
+        return $this->load($name, $params ? $params : $this->params)->get();
     }
 
     /*
      * Loads a view 
      */
-    static function load($name) {
+    static function load($name, $params = array()) {
         $file = dirname(__file__)."/../../views/{$name}.php";
         if (!file_exists($file)) throw new Exception('View not found');
         require_once($file);
-        return /*$this->views[$name] = */new $name();
+        return /*$this->views[$name] = */new $name($params);
     }
         
     /*

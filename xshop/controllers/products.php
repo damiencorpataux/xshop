@@ -19,7 +19,7 @@ class products extends DbController {
 
     var $order = 'ASC';
 
-    var $orderBy = 'price';
+    var $orderBy = 'name';
 
     var $return = array('*');
 

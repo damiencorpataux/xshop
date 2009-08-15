@@ -13,7 +13,7 @@ class PlainWeb extends Controller {
 
     function get() {
         $name = $this->params['view'];
-        $view = new View();
+        $view = new View($this->params);
         print $view->fetch($name);
     }
 

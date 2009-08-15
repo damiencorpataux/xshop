@@ -5,7 +5,8 @@ require_once(dirname(__file__).'/../controllers/products.php');
 class product extends View {
 
     function handle() {
-        $c = new products();
+        var_dump($this->params);
+        $c = new products($this->params);
         $products = $c->get();
         
         $t = new Template('product.tpl');
