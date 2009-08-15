@@ -1,12 +1,3 @@
-if (!console) {
-    console = {
-        log: function() {},
-        warn: function() {},
-        info: function() {},
-        debug: function() {}
-    }
-}
-
 Ext.namespace('xs');
 xs.debug = true;
 
@@ -31,11 +22,11 @@ xs.cart.update = function(id, action, params) {
         }),
         success: function(responseObject) {
             var f = {duration:0.2};
-            Ext.get('cart').load('/shop/views/cartoverview').fadeOut(f).fadeIn(f);
-            Ext.get('cartview').load('/shop/views/cartview').fadeOut(f).fadeIn(f);
+            if (e = Ext.get('cart')) e.load('/shop/views/cartoverview').fadeOut(f).fadeIn(f);
+            if (e = Ext.get('cartview')) e.load('/shop/views/cartview').fadeOut(f).fadeIn(f);
         },
         failure: function() {
-            console.log('Product not added', id);
+            //console.log('Product not added', id);
             // Not interrupting failure msg
         }
     });
@@ -52,3 +43,4 @@ xs.cart.substract = function(id, qty) {
 xs.cart.remove = function(id) {
     this.update(id, 'delete');
 }
+
