@@ -1,0 +1,10 @@
+<?php
+
+$class = $_GET['c'];
+require_once("../backend/php/controllers/{$class}.php");
+
+$dsn = ('mysql://glutena:glutena@localhost/glutena');
+
+$controller = new $class($dsn);
+
+?>

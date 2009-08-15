@@ -1,0 +1,251 @@
+/**
+ HTML
+ **/
+
+body {
+  text-align: center;
+  margin: 0px;
+  font-family: verdana,geneva,lucida,'lucida grande',arial,helvetica,sans-serif;
+  font-size: 12px;
+  /* background-color: #eeeeee; */
+  color: #444444;
+  /* background: black url(../img/bg.jpg) no-repeat scroll right top; */
+}
+
+h1 {
+  color: black;
+  font-family: "Trebuchet MS", Tahoma, arial, sans-serif;
+  font-size: 18px;
+  font-weight: normal;
+  margin: 8px 0 8px;
+  padding: 0;
+}
+h2 {
+  font-family: "Trebuchet MS", Tahoma, arial, sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  margin: 8px 0 8px;
+  padding: 0;
+}
+h3 {
+  font-family: "Trebuchet MS", Tahoma, arial, sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+  margin: 8px 0 0;
+  padding: 0;
+}
+
+p, blockquote {
+  margin:0;
+  padding: 0 0 8px;
+  line-height: 20px;
+}
+
+a, a:visited, a:active,
+.a, .a:visited, .a:active {
+  text-decoration: none;
+  color: #008800;
+}
+a:hover,
+.a:hover {
+  text-decoration: underline;
+  color: #005500;
+}
+
+ol, ul {
+  list-style-position: outside;
+  margin: 0;
+  padding: 0 0 0 38px;
+}
+ol {
+  /*margin-left: 8px;*/
+}
+ul {
+  list-style-image: url(../img/bullet.gif);
+  list-style-type: none;
+  /*margin-left: 5px;*/
+}
+li {
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+ol p, ul p {
+  margin-top: 0px;
+  color: #666666;
+}
+
+img.thumbnail {
+  background-color: white;
+  border: 1px solid #CCCCCC;
+  margin-left: 2px;
+  padding: 2px;
+  opacity: 0.9;
+  filter: alpha(opacity=90);
+}
+img.thumbnail:hover {
+  border-color: #aaaaaa;
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
+
+blockquote {
+  background: transparent url(../img/quote.gif) no-repeat scroll left top;
+  margin: 0;
+  padding-left: 30px;
+  text-align: justify;
+}
+blockquote .source {
+  font-size: 8px;
+  opacity: 0.3;
+}
+blockquote:hover .source {
+  opacity: 1;
+}
+
+
+/**
+ MAIN NAV
+ **/
+/*
+#menu {
+background: transparent url(../img/mainnav-bg.png) no-repeat scroll left top;
+height: 25px;
+padding-left: 45px;
+position: relative;
+clear: both;
+}
+#menu li.active {
+background: #FFFFFF url(../img/mainnav-sh-left.png) no-repeat scroll left top;
+left: -10px;
+margin-right: -20px;
+padding-left: 10px;
+position: relative;
+}
+#menu li {
+list-style: none;
+float: left;
+height: 25px;
+margin: 0;
+padding: 0;
+}
+#menu li.active a {
+background: transparent url(../img/mainnav-sh-right.png) no-repeat scroll right top;
+color: #001155;
+font-weight: bold;
+padding-right: 26px;
+}
+#menu li a {
+background: transparent url(../img/mainnav-sep.png) no-repeat scroll right top;
+color: #555555;
+display: block;
+float: left;
+font-size: 14px;
+height: 20px;
+padding: 5px 16px 10px;
+position: relative;
+}
+*/
+
+/**
+ LAYOUT
+ **/
+
+#wrapper {
+  margin: auto;
+  text-align: left;
+  width: 900px;
+  border-width: 0 1px 1px 1px;
+  /* border-style: solid; */
+  border-color: #aaaaaa;
+  /* background: white url(../img/fade-vertical-top.png) repeat-x scroll left top; */
+}
+
+#header {
+  /* display: none; */
+  font-family: "Trebuchet MS",Tahoma,arial,sans-serif;
+  /* background: transparent url(../img/header.jpg) no-repeat scroll right top; */
+  overflow: hidden;
+  padding: 10px 0 0 10px;
+  background: white url(../img/fade-vertical-top.png) repeat-x scroll left bottom;
+}
+#header .text {
+  color: black;
+  font-weight: bolder;
+  font-size: 33px;
+  line-height: 33px;
+  height: 50px;
+}
+#header .motto {
+  color:  gray;
+  font-size: 10px;
+  margin-left: 0px;
+  height: 25px;
+}
+#header .digest {
+}
+
+#content {
+  padding: 10px;
+  padding-left: 50px;
+  float: left;
+  width: 600px;
+  background-color: white;
+  opacity: 0.9;
+}
+
+#additional {
+  float: left;
+  width: 176px;
+  margin-top: 80px;
+/*  margin-left: 50px;
+  background-color: black;
+  opacity: 0.5; */
+}
+#additional ol, #additional ul {
+  margin-left: 0px;
+  padding-left: 15px;
+}
+
+#footer {
+  background: white url(../img/fade-vertical-top.png) repeat-x scroll left top;
+  clear: both;
+  font-family: "Trebuchet MS",Tahoma,arial,sans-serif;
+  padding: 2em 0 1em 0;
+  text-align: center;
+  color: gray;
+  font-size: 10px;
+  border-top:1px solid #dddddd;
+}
+
+
+/**
+ PAGE ITEMS
+ **/
+
+#map {
+  width: 100%;
+  height: 256px;
+  border: 1px solid #dddddd;
+}
+
+.wbox {
+  display: none;
+  background-color: #dceaf4;
+  margin-top: 6px;
+  padding: 10px;
+  position: relative;
+}
+.wedge {
+  background-image: url(../img/wedges.gif);
+  background-position: 0 0;
+  background-repeat: no-repeat;
+  height: 8px;
+  position: absolute;
+  width: 17px;
+}
+.wedgeup {
+  background-position: 0 -162px;
+  left: 10px;
+  margin-top: -7px;
+  top: 0;
+}
