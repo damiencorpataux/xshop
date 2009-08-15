@@ -28,6 +28,7 @@ class products extends DbController {
         // Adds a multifields, fulltext where clause
         if (!isset($this->params['fulltext'])) return $sql;
         $fulltext = $this->params['fulltext'];
+        if (!$fulltext) return $sql;
         $sql .= ' AND ( 0';
         foreach (explode(' ', $fulltext) as $text) {
             foreach (array('name', 'description') as $fullfield) {
