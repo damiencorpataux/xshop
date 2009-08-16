@@ -13,9 +13,17 @@ class Template {
         } else {
             throw new Exception("Template {$name} not found");
         }
+        // Assigns commonly used values
+        $this->a('_q', $_SERVER['QUERY_STRING']);
+        // TODO: remove _dc param (mind ext requests)
+
     }
 
     function assign($name, $value = null) {
+        if (is_array($name)) {
+            foreach($name as $k => $v) $this->assign($k, $v);
+            return;
+        }
         $this->variables[$name] = $value;
     }
     function a($name, $value = null) {

@@ -41,19 +41,6 @@ class Controller {
     function put() {}
 
     function delete() {}
-
-    function handle($result) {
-        $this->respond($result);
-    }
-
-    function respond($item) {
-        print json_encode($item);
-    }
-
-    function error($httpStatus) {
-        // TODO: switch on httpstatus (404, 500, 302, ...)
-        // and send proper header
-    }
 }
 
 ?>

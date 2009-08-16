@@ -4,11 +4,13 @@
 <h1>Résumé de votre panier</h1>
 <hr/>
 <h2>
-{n}&nbsp;produits,
+{n}&nbsp;éléments,
+{nproducts}&nbsp;produits,
+{weight}&nbsp;g,
 {price}&nbsp;CHF&nbsp;au&nbsp;total
 </h2>
 <hr/>
-<a href="/shop/web/productlist">Retour au magasin</a>
+<a href="/shop/web/productlist/">Retour au magasin</a>
 <br/>
 <h1>Contenu de votre panier</h1>
 {details}

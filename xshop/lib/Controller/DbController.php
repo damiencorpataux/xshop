@@ -42,6 +42,7 @@ class DbController extends Controller {
 
     function get() {
         $sql = $this->getSqlSelect();
+        $sql .= $this->getSqlFrom();
         $sql .= $this->getSqlWhere();
         $sql .= $this->getSqlJoin();
         $sql .= $this->getSqlMisc();
@@ -84,6 +85,15 @@ class DbController extends Controller {
             $this->getSqlWhere(false);
         return $this->query($sql);
     }
+    
+    function count() {
+        $sql = "SELECT count(" . array_shift($this->mapping) . ") as count";
+        $sql .= $this->getSqlFrom();
+        $sql .= $this->getSqlWhere();
+        $sql .= $this->getSqlJoin();
+        $sql .= $this->getSqlMisc();
+        return array_shift($this->query($sql));
+    }
         
     // Returns a table_field => value mapping array from http request
     function getFieldsValues($usePatterns = true) {
@@ -107,7 +117,11 @@ class DbController extends Controller {
     }
 
     function getSqlSelect() {
-        return "SELECT ".implode(', ', $this->return)." FROM {$this->table}";
+        return " SELECT ".implode(', ', $this->return);
+    }
+
+    function getSqlFrom() {
+        return " FROM {$this->table}";
     }
     
     function getSqlWhere($usePattern = true) {
@@ -129,7 +143,8 @@ class DbController extends Controller {
             $sql .= " ORDER BY {$this->orderBy} {$this->order}";
         }
         if ($this->params['limit']) {
-            $sql .= " LIMIT {$this->params['limit']}";
+            $this->params['offset'] = $this->params['offset'] ? $this->params['offset'] : 0;
+            $sql .= " LIMIT {$this->params['offset']},{$this->params['limit']}";
         }
         return $sql;
     }
@@ -166,18 +181,6 @@ class DbController extends Controller {
             'Query:', $sql,
             'Result:', $result);
         return $result;
-    }
-
-    function handle($result) {
-        $error = false;
-        if ($error) {
-            header("HTTP/1.0 500 Internal Server Error");
-            if ($debug) var_dump($result);
-        }
-        if (count($result) < 1) {
-            header("HTTP/1.0 404 Not Found");
-        }
-        $this->respond($result);
     }
 
     function parse($dsn) {

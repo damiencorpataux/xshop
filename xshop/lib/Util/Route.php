@@ -53,10 +53,8 @@ class Router {
             $var = substr($var, 1);
             $params[$var] = $part;
         }
-        // params defined in route config are prioritary
-        if (isset($route['params'])) $params = array_merge($_REQUEST, $params, $route['params']);
         // sets params in server request
-        foreach($params as $k => $v) $_REQUEST[$k] = $v;
+        //foreach($params as $k => $v) $_REQUEST[$k] = $v;
         // debug info
         if (isset($_GET['debug'])) {
             Util::debug('Route debug',
@@ -70,6 +68,8 @@ class Router {
                  $_REQUEST
             );
         }
+        // params defined in route config are prioritary
+        if (isset($route['params'])) $params = array_merge($_REQUEST, $params, $route['params']);
         // calls controller action
         $controller = $params['controller'];
         $action = $params['action'];

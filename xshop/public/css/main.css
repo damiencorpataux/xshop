@@ -200,9 +200,9 @@ position: relative;
 #additional {
   float: left;
   width: 176px;
-  margin-top: 80px;
+  margin-left: 30px;
+  padding: 0 0 30px 30px;
 /*  margin-left: 50px;
-  background-color: black;
   opacity: 0.5; */
 }
 #additional ol, #additional ul {

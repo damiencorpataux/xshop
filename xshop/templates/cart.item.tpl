@@ -5,8 +5,7 @@
   <h3>{product.quantity}x <a href="/shop/web/product/{product.id}">{product.name}</a></h2>
   <h3>{product.quantity}x {product.price} CHF</h2>
   <h1>{product.total} CHF</h1>
-  
-  <div style="clear:both"></div>
+  <div style="clear:both"></div>  
   <a href="/shop/web/product/{product.id}">Afficher les détails</a>
   |
   <a href="javascript:xs.cart.add({product.id})">Ajouter une unité</a>

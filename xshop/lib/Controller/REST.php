@@ -27,6 +27,27 @@ class REST extends Controller {
             break;
         }
     }
+
+    function handle($result) {
+        $error = false;
+        if ($error) {
+            header("HTTP/1.0 500 Internal Server Error");
+            if ($debug) var_dump($result);
+        }
+        if (count($result) < 1) {
+            header("HTTP/1.0 404 Not Found");
+        }
+        $this->respond($result);
+    }
+
+    function respond($item) {
+        print json_encode($item);
+    }
+
+    function error($httpStatus) {
+        // TODO: switch on httpstatus (404, 500, 302, ...)
+        // and send proper header
+    }
 }
 
 ?>

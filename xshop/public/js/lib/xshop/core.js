@@ -1,29 +1,31 @@
 Ext.namespace('xs');
 xs.debug = true;
 
-Ext.namespace('xs.misc');
-xs.misc.initSpinner = function() {
+Ext.namespace('xs.util');
+xs.util.initSpinner = function() {
     //Ext.Ajax.on('beforerequest', this.showSpinner, this);
     //Ext.Ajax.on('requestcomplete', this.hideSpinner, this);
     //Ext.Ajax.on('requestexception', this.hideSpinner, this);
 }
+xs.util.update = function(id, url) {
+    var f = {duration:0.125};
+    if (e = Ext.get(id)) e.load(url).fadeOut(f).fadeIn(f);
+}
 
 Ext.namespace('xs.cart');
-xs.cart.update = function(id, action, params) {
+xs.cart.update = function(action, params) {
     var action = action || 'add';
     var params = params || {};
     // TODO: stop event
     Ext.Ajax.request({
-        url: '/shop/cart/' + action,
+        url: '/shop/rest/cart/' + action,
         method: 'POST',
         params: Ext.apply(params, {
-            //debug: true,
-            product: id
+            //debug: true
         }),
         success: function(responseObject) {
-            var f = {duration:0.2};
-            if (e = Ext.get('cart')) e.load('/shop/views/cartoverview').fadeOut(f).fadeIn(f);
-            if (e = Ext.get('cartview')) e.load('/shop/views/cartview').fadeOut(f).fadeIn(f);
+            xs.util.update('cart', '/shop/views/cartoverview');
+            xs.util.update('cartview', '/shop/views/cartview');
         },
         failure: function() {
             //console.log('Product not added', id);
@@ -33,14 +35,15 @@ xs.cart.update = function(id, action, params) {
 }
 xs.cart.add = function(id, qty) {
     var qty = qty || 1;
-    this.update(id, 'add', {qty: qty})
+    this.update('add', {product: id, qty: qty})
 }
 xs.cart.substract = function(id, qty) {
     var qty = qty || 1;
-    this.update(id, 'add', {qty: -qty})
+    this.update('add', {product: id, qty: -qty})
 }
-
 xs.cart.remove = function(id) {
-    this.update(id, 'delete');
+    this.update('delete', {product: id});
 }
-
+xs.cart.empty = function(id) {
+    //this.update('delete', {customer: 1});
+}
