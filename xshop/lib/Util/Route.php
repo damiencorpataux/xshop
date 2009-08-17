@@ -46,15 +46,17 @@ class Router {
         if (count($this->routes) < 1) throw new Exception("No URI matching route");
         $route = array_shift($this->routes);
         // get params from route fragments
-        $params = array();
+        $routeparams = array();
         foreach ($this->fragments as $i => $part) {
             $var = $route['pattern'][$i];
             if ($var{0} != ':') continue;
             $var = substr($var, 1);
-            $params[$var] = $part;
+            $routeparams[$var] = $part;
         }
         // sets params in server request
         //foreach($params as $k => $v) $_REQUEST[$k] = $v;
+        // params defined in route config are prioritary
+        $params = array_merge($_REQUEST, $routeparams, $route['params']);
         // debug info
         if (isset($_GET['debug'])) {
             Util::debug('Route debug',
@@ -63,13 +65,13 @@ class Router {
                  'Matched route:',
                  $route,
                  'Route params:',
+                 $routeparams,
+                 'Controller params:',
                  $params,
                  'REQUEST params:',
                  $_REQUEST
             );
         }
-        // params defined in route config are prioritary
-        if (isset($route['params'])) $params = array_merge($_REQUEST, $params, $route['params']);
         // calls controller action
         $controller = $params['controller'];
         $action = $params['action'];
