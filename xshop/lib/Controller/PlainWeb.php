@@ -7,8 +7,18 @@ class PlainWeb extends Controller {
 
     function __construct($params = array()) {
         //error_reporting(0) in prod mode
-        parent::__construct($params);
-        $this->get();
+        try {
+            parent::__construct($params);
+            $this->get();
+        } catch (Exception $e) {
+            print
+                '<pre style="background-color:#fcc; border:2px dashed #e00; padding:10px; font-size:11px">' .
+                '<h1>Unexpected error</h1>' .
+                $e . 
+                '</pre>';
+            $this->params = array(view => 'welcome');
+            $this->get();
+        }
     }
 
     function get() {

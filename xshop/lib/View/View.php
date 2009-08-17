@@ -45,7 +45,7 @@ class View {
         $args = func_get_args();
         foreach($args as $arg) $this->buffer .= $arg;
     }
-    
+
     /*
      * Applies and returns the string display of the view
      */
