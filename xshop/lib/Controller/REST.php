@@ -10,17 +10,23 @@ require_once(dirname(__file__).'/Controller.php');
 class REST extends Controller {
 
     function __construct($params = array()) {
-        $this->dsn = $dsn ? $dsn : Config::get('dsn');
         parent::__construct($params);
+        $controller = $this->params['controller'];
+        require_once(dirname(__file__)."/../../controllers/{$controller}.php");
+        $c = new $controller($this->params);
+        if ($action = $this->params['action']) {
+            $this->handle($c->$action());
+        }
+        return;
         switch ($_SERVER['REQUEST_METHOD']) {
             case 'GET':
-                $this->get();
+                $this->handle($c->get());
             break;
             case 'PUT':
-                $this->put();
+                $this->handle($c->put());
             break;
             case 'DELETE':
-                $this->delete();
+                $this->handle($c->delete());
             break;
             default:
                 header("HTTP/1.0 405 Method Not Allowed");
@@ -29,14 +35,15 @@ class REST extends Controller {
     }
 
     function handle($result) {
+        /*
         $error = false;
         if ($error) {
             header("HTTP/1.0 500 Internal Server Error");
-            if ($debug) var_dump($result);
         }
         if (count($result) < 1) {
             header("HTTP/1.0 404 Not Found");
         }
+        */
         $this->respond($result);
     }
 
