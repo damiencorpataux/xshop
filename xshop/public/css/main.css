@@ -2,7 +2,7 @@
  HTML
  **/
 
-body {
+body, table {
   text-align: center;
   margin: 0px;
   font-family: verdana,geneva,lucida,'lucida grande',arial,helvetica,sans-serif;
@@ -106,6 +106,14 @@ blockquote:hover .source {
   opacity: 1;
 }
 
+form th {
+  text-align: right;
+  padding-right: 10px;
+}
+form td {
+  text-align: left;
+  padding-right: 10px;
+}
 
 /**
  MAIN NAV

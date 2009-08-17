@@ -14,6 +14,9 @@
         <div class="text">Next shop</div>
         <div class="motto">Think simple</div>
         <div style="clear:both"></div>
+        <div style="text-align:right">
+          <a href="/shop/web/subscription/">Inscription</a>
+        </div>
       </div>
       <div id="content">
         {center}

@@ -23,7 +23,7 @@ xs.cart.update = function(action, params) {
         params: Ext.apply(params, {
             //debug: true
         }),
-        success: function(responseObject) {
+        success: function(r) {
             xs.util.update('cart', '/shop/views/cartoverview');
             xs.util.update('cartview', '/shop/views/cartview');
         },
@@ -46,4 +46,22 @@ xs.cart.remove = function(id) {
 }
 xs.cart.empty = function(id) {
     //this.update('delete', {customer: 1});
+}
+
+Ext.namespace('xs.customer');
+xs.customer.emailCheck = function(email) {
+    Ext.Ajax.request({
+        url: '/shop/rest/customer/isemailavailable/',
+        method: 'POST',
+        params:  {
+            email: email
+        },
+        success: function(r) {
+            console.log(r);
+        },
+        failure: function() {
+            //console.log('Product not added', id);
+            // Not interrupting failure msg
+        }
+    });
 }
