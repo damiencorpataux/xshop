@@ -43,10 +43,11 @@ class Template {
     function apply() {
         // complies template
         $s = $this->template;
+        // for blocks
+        // FIXME: the correct tpl block end tag should be smartly guessed
+        $s = preg_replace_callback('/<tpl for="(.+?)">(.+?)<\/tpl>/', array($this, "_applyfor"), $s);
         // if blocks
         $s = preg_replace_callback('/<tpl if="(.+?)">(.+?)<\/tpl>/', array($this, "_applyif"), $s);
-        // for blocks
-        //$s = preg_replace_callback('/<tpl (.+?)="(.+?)">(.+?)<\/tpl>/', array($this, "_apply"), $s);
         // variables
         $s = preg_replace_callback('/{([^\s{}]+?)}/', array($this, "_applyvar"), $s);
         // processes compiled template
@@ -63,36 +64,43 @@ class Template {
     /*
      * Returns a php variable string
      */
-    function _convertvar($var) {
+    function _convert($var) {
         if (is_array($var)) $var = array_shift($var);
-        // fingers variable type
+        // creates php variable string
         $parts = '$this->variables';
         $value = $this->variables;
         foreach(explode('.', $var) as $i => $member) {
-            if (is_array($value)) {
-                $parts .= "['{$member}']";
-                $value = $value[$member];
-            } elseif (is_object($value)) {
-                $parts .= "->{$member}";
-                $value = $value->$member;
-            }
-            else throw new Exception("Could not handle variable type");
+            // handles reserved variables names (see _applyfor)
+            if ($member == '#' && $i==0) return '$k';
+            elseif ($member == '#') $parts .= '[$k]';
+            elseif (!$member && $i==0) return '$v';
+            // adds component to php variable string
+            else $parts .= "['{$member}']";
         }
         return $parts;
     }
     function _applyvar($matches) {
         // TODO: implement string formatting (see Ext.Template & Ext.util.Format)
-        $var = $this->_convertvar($matches[1]);
-        return "\n<?php print {$var}; ?>\n";
+        $phpvar = $this->_convert($matches[1]);
+        return "<?php if (isset({$phpvar})) print {$phpvar}; ?>";
     }
     function _applyif($matches) {
-        $variables = $this->variables;
         $cond = $matches[1];
         $content = $matches[2];
-        $php = preg_replace_callback('/[a-zA-Z]{1}[\w]*/', array($this, '_convertvar'), $cond);
-        return "<?php if ($php) { ?>\n{$content}\n<?php } ?>";
+        $phpcond = preg_replace_callback('/[a-zA-Z#]{1}[\w]*/', array($this, '_convert'), $cond);
+        return "<?php if ({$phpcond}) { ?> {$content} <?php } ?>";
     }
-    
+    function _applyfor($matches) {
+        // NOTE: cannot look through object members
+        $var = $matches[1];
+        $content = $matches[2];
+        // creates foreach php variable
+        $phpvar = $this->_convert($var);
+        // prefixes 
+        // TODO: handle parent.key as in ext
+        $content = preg_replace('/{([^.#].*?)}/', '{'.$var.'.#.$1}', $content);
+        return "<?php foreach($phpvar as \$k => \$v) { ?> {$content} <?php } ?>";
+    }    
 }
 
 ?>
