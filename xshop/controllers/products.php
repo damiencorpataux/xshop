@@ -25,17 +25,7 @@ class products extends DbController {
 
     function getSqlWhere() {
         $sql = parent::getSqlWhere();
-        // Adds a multifields, fulltext where clause
-        if (!isset($this->params['fulltext'])) return $sql;
-        $fulltext = $this->params['fulltext'];
-        if (!$fulltext) return $sql;
-        $sql .= ' AND ( 0';
-        foreach (explode(' ', $fulltext) as $text) {
-            foreach (array('name', 'description') as $fullfield) {
-                if (!empty($fulltext)) $sql .= " OR {$fullfield} LIKE '%{$text}%'";
-            }
-        }
-        $sql .= ' )';
+        $sql .= parent::getSqlWhereFulltextSearch('fulltext', array('name', 'description'));
         return $sql;
     }
 

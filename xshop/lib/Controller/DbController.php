@@ -94,7 +94,9 @@ class DbController extends Controller {
         $sql .= $this->getSqlMisc();
         return array_shift($this->query($sql));
     }
-        
+
+
+
     // Returns a table_field => value mapping array from http request
     function getFieldsValues($usePatterns = true) {
         $mapping = array();        
@@ -146,6 +148,21 @@ class DbController extends Controller {
             $this->params['offset'] = $this->params['offset'] ? $this->params['offset'] : 0;
             $sql .= " LIMIT {$this->params['offset']},{$this->params['limit']}";
         }
+        return $sql;
+    }
+
+    function getSqlWhereFulltextSearch($paramname, $searchfields) {
+        // multifields, fulltext where clause
+        if (!isset($this->params[$paramname])) return $sql;
+        $fulltext = $this->params[$paramname];
+        if (!$fulltext) return $sql;
+        $sql .= ' AND ( 0';
+        foreach (explode(' ', $fulltext) as $text) {
+            foreach ($searchfields as $searchfield) {
+                if (!empty($fulltext)) $sql .= " OR {$searchfield} LIKE '%{$text}%'";
+            }
+        }
+        $sql .= ' )';
         return $sql;
     }
 
