@@ -1,21 +1,23 @@
 <?php
 
 require_once(dirname(__file__).'/../Util/Util.php');
+require_once(dirname(__file__).'/../Util/Auth.php');
 require_once(dirname(__file__).'/Template.php');
 
+// TODO: should a View be a Controller subclass?
 class View {
 
     /*
      * Buffering string
      */
     var $buffer = '';
-    
+
     var $params = array();
 
     function __construct($params = array()) {
         $this->params = $params;
     }
-    
+
     function handle() {
         // Implemented in subclasses
     }
@@ -28,7 +30,7 @@ class View {
     }
 
     /*
-     * Loads a view 
+     * Loads a view
      */
     static function load($name, $params = array()) {
         $file = dirname(__file__)."/../../views/{$name}.php";
@@ -36,7 +38,7 @@ class View {
         require_once($file);
         return /*$this->views[$name] = */new $name($params);
     }
-        
+
     /*
      * Buffers a string
      * Takes an arbitrary number of string params
@@ -54,7 +56,7 @@ class View {
         $this->handle();
         return $this->buffer;
     }
-    
+
     function display() {
         print $this->get();
     }

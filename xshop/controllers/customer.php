@@ -15,7 +15,7 @@ class customer extends DbController {
         'password' => 'password',
         'lang' => 'lang'
     );
-    
+
     var $put = array('name', 'surname', 'email', 'password');
 
     var $return = array('*');
@@ -26,15 +26,30 @@ class customer extends DbController {
             "";
     }
 
+    function get() {
+        // TODO: check auth
+        return parent::get();
+    }
+
     function put() {
         // TODO: check mail pattern
         // TODO: hash password: SHA1? MD5?
         return parent::put();
     }
-    
+
+    function delete() {
+        // TODO: do not delete, set as inactive
+        return parent::delete();
+    }
+
+    function isvalidauth() {
+        $r = array_shift($this->get());
+        return (count($r) && $r['password'] == $this->params['password']);
+    }
+
     function isemailavailable() {
         $r = $this->get();
-        return count($r) ? true : false;
+        return count($r) ? false : true;
     }
 
 }

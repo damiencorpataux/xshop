@@ -1,5 +1,6 @@
 <?php
 
+require_once(dirname(__file__).'/../lib/Util/Auth.php'); // TODO: do the auth stuff in cart view instead of cart controller? how to secure the userid?
 require_once(dirname(__file__).'/../lib/Controller/DbController.php');
 require_once(dirname(__file__).'/order.php');
 
@@ -36,7 +37,7 @@ class cart extends DbController {
 
     function __construct($params = array()) {
         parent::__construct($params);
-        if (!isset($this->params['id'])) $this->params['id'] = $this->getOrderId(); // Deprecated
+        if (!isset($this->params['id'])) $this->params['id'] = $this->getOrderId(); // Deprecated, use order as in mapping
         if (!isset($this->params['order'])) $this->params['order'] = $this->getOrderId();
     }
 
@@ -47,7 +48,7 @@ class cart extends DbController {
         // looks for product in cart
         if (!isset($this->params['product'])) throw new Exception("No product specified");
         $c = new cart(array(
-            id=>$this->params['id'],
+            id=>$this->params['order'],
             product=>$this->params['product']
         ));
         $items = $c->get();
@@ -71,26 +72,27 @@ class cart extends DbController {
             return $this->delete();
         }
     }
-    
+
     function remove() {
         // TODO: if last order product removed, delete the related order
     }
-    
+
     function getOrderId() {
         // gets current order,
         // if an unprocessed order does not exist, create it
         // TODO: move this in order::getCurrent() ?
-        $c = new order(array(customer=>1)); // FIXME: use authed customer
+        $uid = Auth::get() ? Auth::getid() : 0;
+        $c = new order(array(customer=>$uid));
         $order = $c->getCurrent();
         if (!count($order)) {
             $id = $c->put();
             $id = $id['insertid'];
             $order = $c->get($id);
         }
-        $order = $order[0];        
+        $order = $order[0];
         return $order['id'];
     }
-    
+
 }
 
 ?>

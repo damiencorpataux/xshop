@@ -16,8 +16,8 @@ class REST extends Controller {
         $c = new $controller($this->params);
         if ($action = $this->params['action']) {
             $this->handle($c->$action());
+            return;
         }
-        return;
         switch ($_SERVER['REQUEST_METHOD']) {
             case 'GET':
                 $this->handle($c->get());

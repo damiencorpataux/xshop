@@ -12,7 +12,7 @@ class productlist extends View {
         // create products controller
         $c = new products(array(
             fulltext => $this->params['fulltext'],
-        ));        
+        ));
         // compute page
         $pagelength = 3;
         $ntotal = array_shift($c->count());

@@ -2,15 +2,11 @@
 <p>S'inscrire? En un clin d'oeil! Votre adresse vous sera demandée lors
 de votre première commande.</p>
 
-<div style="display:{error};text-align:center;color:#a00">
+<div style="display:{error};color:#a00">
   Formulaire invalide
 </div>
 <form action="2" method="POST">
 <table>
-  <tr>
-    <th></th>
-    <td></td>
-  </tr>
   <!--
   <tr>
     <th>Compliment</th>

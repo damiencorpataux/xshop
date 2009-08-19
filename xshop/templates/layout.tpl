@@ -15,7 +15,13 @@
         <div class="motto">Think simple</div>
         <div style="clear:both"></div>
         <div style="text-align:right">
+          <a href="/shop/web/login/">Identification</a>
+          |
+          <a href="/shop/web/logout/">Déconnexion</a>
+          |
           <a href="/shop/web/subscription/">Inscription</a>
+          <br/>
+          <b>{customername}</b>
         </div>
       </div>
       <div id="content">

@@ -2,6 +2,38 @@
 
 require_once(dirname(__file__).'/Util.php');
 
+/*
+ * message: string message
+ * status: int http response status
+ */
+class Xception extends Exception {
+
+    // FIXME: successful responses do not belong to an exception,
+    //        successful re
+    var $statuses = array(
+        // Sucessful 2xx
+        200 => 'HTTP/1.0 200 OK',
+        201 => 'HTTP/1.0 201 Created',
+        // Client error 4xx
+        400 => 'HTTP/1.0 400 Bad Reuest',
+        404 => 'HTTP/1.0 404 Not Found',
+        405 => 'HTTP/1.0 405 Method Not Allowed',
+        // Server error 5xx
+        500 => 'HTTP/1.0 500 Internal Server Error',
+        501 => 'HTTP/1.0 501 Not Implemented'
+    );
+
+    function __construct($message, $status = 200) {
+        parent::__construct($message);
+    }
+
+    function __toString() {
+        header($this->statuses[$status]);
+        return parent::__toString();
+    }
+
+}
+
 class Router {
 
     var $fragments = array();
@@ -15,14 +47,14 @@ class Router {
         $uri = trim($uri, '/');
         $this->fragments = explode('/', $uri);
     }
-    
+
     function add($pattern, $params = null) {
         $this->routes[] = array(
             pattern => explode('/', $pattern),
             params => $params ? $params : array()
         );
     }
-    
+
     function route() {
         // finds the best matching route
         foreach ($this->fragments as $ip => $part) {
@@ -35,7 +67,7 @@ class Router {
 //                if (count($part) != count($route)) {
 //                    unset($this->routes[$ir]);
 //                    continue;
-//                }                
+//                }
                 if ($route['pattern'][$ip]{0} == ':') continue;
                 if ($route['pattern'][$ip] != $part) {
                     unset($this->routes[$ir]);
@@ -46,17 +78,18 @@ class Router {
         if (count($this->routes) < 1) throw new Exception("No URI matching route");
         $route = array_shift($this->routes);
         // get params from route fragments
-        $routeparams = array();
+        $routeargs = array();
         foreach ($this->fragments as $i => $part) {
             $var = $route['pattern'][$i];
             if ($var{0} != ':') continue;
             $var = substr($var, 1);
-            $routeparams[$var] = $part;
+            $routeargs[$var] = $part;
         }
+        $routeargs = array_merge($routeargs, $route['params']);
         // sets params in server request
         //foreach($params as $k => $v) $_REQUEST[$k] = $v;
         // params defined in route config are prioritary
-        $params = array_merge($_REQUEST, $routeparams, $route['params']);
+        $params = array_merge($_REQUEST, $routeargs);
         // debug info
         if (isset($_GET['debug'])) {
             Util::debug('Route debug',
@@ -64,13 +97,18 @@ class Router {
                  $this->fragments,
                  'Matched route:',
                  $route,
-                 'Route params:',
-                 $routeparams,
+                 'Route arguments:',
+                 $routeargs,
                  'Controller params:',
                  $params,
                  'REQUEST params:',
                  $_REQUEST
             );
+        }
+        // handle route actions
+        if ($route['params']['redirect']) {
+            header("Location: {$route['params']['redirect']}");
+            return;
         }
         // calls controller action
         $controller = $params['controller'];
@@ -85,11 +123,11 @@ class Router {
                 print
                     '<pre style="background-color:#fcc; border:2px dashed #e00; padding:10px; font-size:11px">' .
                     '<h1>Unexpected error</h1>' .
-                    $e . 
+                    $e .
                     '</pre>';
             }
         }
-    }    
+    }
 }
 
 ?>
