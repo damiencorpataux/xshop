@@ -3,6 +3,7 @@ xs.debug = true;
 
 Ext.namespace('xs.util');
 xs.util.initSpinner = function() {
+    // TODO: make a neat spinner on requests
     //Ext.Ajax.on('beforerequest', this.showSpinner, this);
     //Ext.Ajax.on('requestcomplete', this.hideSpinner, this);
     //Ext.Ajax.on('requestexception', this.hideSpinner, this);
@@ -12,7 +13,10 @@ xs.util.update = function(nodeid, url) {
     if (!el) return;
     var f = {duration:0.5};
     //var url = url + 'debug'
+    // FIXME: make an Ext.Ajax.request() with instant slow-fadeout
+    //        and a fadein on success; on error, put back last content
     el.load(url)./*fadeOut(f).*/fadeIn(f);
+    // TODO: disable link during update & make a spinner or mouse waiting icon
 }
 xs.util.typeout = function(inputid, callback, options) {
     var options = Ext.apply({
@@ -32,8 +36,8 @@ xs.util.typeout = function(inputid, callback, options) {
             this.lasttime = new Date().getTime();
             timeout = this.diff < 3000 ? this.diff : 200;
         }
+        // calls latest event callback
         if (this.getValue().length < options.minchar) return;
-        // FIXME: what scope for the callback?
         if (!this.task) this.task = new Ext.util.DelayedTask(callback, this);
         else this.task.cancel();
         this.task.delay(timeout);
@@ -42,6 +46,7 @@ xs.util.typeout = function(inputid, callback, options) {
 
 Ext.namespace('xs.util.validator');
 xs.util.validator.rest = function(url, options) {
+    // TODO: make a sync request
     Ext.Ajax.request({
         url: '/shop/rest/customer/isemailavailable/',
         method: 'POST',
@@ -52,11 +57,11 @@ xs.util.validator.rest = function(url, options) {
             console.log(r.responseText);
         },
         failure: function() {
-            //console.log('Product not added', id);
             // Not interrupting failure msg
         }
     });
 }
+
 
 Ext.namespace('xs.cart');
 xs.cart.update = function(action, params) {

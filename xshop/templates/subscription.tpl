@@ -1,3 +1,9 @@
+<script>
+  Ext.onReady(function() {
+    // TODO: check availability only if typed email is valid
+    xs.util.typeout('email', xs.util.validator.rest);
+  });
+</script>
 <h1>Inscription</h1>
 <p>S'inscrire? En un clin d'oeil! Votre adresse vous sera demandée lors
 de votre première commande.</p>

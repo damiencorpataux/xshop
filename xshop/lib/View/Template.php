@@ -41,17 +41,18 @@ class Template {
      */
     function apply() {
         $s = $this->template;
-        //$s = preg_replace_callback('/<tpl ([^>]+?)>/', array($this, "_apply"), $s);
-        $s = preg_replace_callback('/{([^{}]+?)}/', array($this, "_apply"), $s);
+        // if blocks
+        $s = preg_replace_callback('/<tpl (.+?)="(.+?)">(.+?)<\/tpl>/', array($this, "_applyif"), $s);
+        // for blocks
+        //$s = preg_replace_callback('/<tpl (.+?)="(.+?)">(.+?)<\/tpl>/', array($this, "_apply"), $s);
+        // variables
+        $s = preg_replace_callback('/{([^\s{}]+?)}/', array($this, "_applyvar"), $s);
         return $s;
     }
-    function _apply($matches) {
-        $var = $matches[1];
-        if (substr($var, 0, 2) == 'if') return $this->_applytplif($var, $this->variables);
-        elseif (substr($var, 0, 3) == 'for') return $this->_applytplfor($var, $this->variables);
-        else return $this->_applyvar($var, $this->variables);
-    }
-    function _applyvar($index, $variables) {
+    function _applyvar($index, $variables=null) {
+        if (is_array($index)) $index = $index[1];
+        if (!$variables) $variables = $this->variables;
+        // TODO: implement string formatting (see Ext.Template & Ext.util.Format)
         if ($p = strpos($index, '.')) {
             $followup = substr($index, $p+1);
             $index = substr($index, 0, $p);
@@ -65,8 +66,14 @@ class Template {
             throw new Exception("Could not handle variable type");
         }
     }
-    function _applytplif($index, $variables) {
-        print $index;
+    function _applyif($matches) {
+        $variables = $this->variables;
+        $op = $matches[1]; // = 'if'
+        $cond = $matches[2];
+        $body = $matches[3];
+        var_dump($matches);
+        $m = $cond = preg_replace('/[a-zA-Z]{1}[\w]*/', "$$0", $cond);
+        print_r($m);
     }
 }
 

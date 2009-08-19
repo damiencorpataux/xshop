@@ -1,7 +1,6 @@
 <?php
 
 session_start();
-
 require_once(dirname(__file__).'/../lib/Util/Config.php');
 
 require_once(dirname(__file__).'/../lib/Util/Route.php');
