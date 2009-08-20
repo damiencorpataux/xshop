@@ -39,9 +39,9 @@ $t->template =
     '<tpl if="age < 10 & ages!= 2 && age">' .
         'Older than 10 (math sign: < )' .
     '</tpl>';
-$t->a('age', 12);
+$t->a('age', 9);
 //print $t->template.'<br/>';
-//print $t->apply();
+print $t->apply();
 
 
 // Tests for loop
