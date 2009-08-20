@@ -6,9 +6,9 @@ class layout extends View {
     var $center = 'Center html';
     var $related = 'Related contents';
     var $meta = array(
-        title => '',
-        keywords => '',
-        author => '',
+        //title => '',
+        //keywords => '',
+        //author => '',
         scripts => array(
             '/shop/js/lib/ext-core/ext-core.js',
             '/shop/js/lib/xshop/core.js'

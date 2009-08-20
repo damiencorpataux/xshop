@@ -17,6 +17,7 @@ class product extends View {
     }
 
     function getMeta() {
+        return array('title' => $this->product['name']);
     }
 }
 
