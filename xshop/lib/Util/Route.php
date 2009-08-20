@@ -14,8 +14,10 @@ class Xception extends Exception {
         // Sucessful 2xx
         200 => 'HTTP/1.0 200 OK',
         201 => 'HTTP/1.0 201 Created',
+        202 => 'HTTP/1.0 202 Accepted',
         // Client error 4xx
         400 => 'HTTP/1.0 400 Bad Reuest',
+        401 => 'HTTP/1.0 401 Unauthorized',
         404 => 'HTTP/1.0 404 Not Found',
         405 => 'HTTP/1.0 405 Method Not Allowed',
         // Server error 5xx
