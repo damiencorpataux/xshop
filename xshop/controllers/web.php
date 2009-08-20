@@ -5,9 +5,11 @@ require_once(dirname(__file__).'/../lib/Controller/PlainWeb.php');
 class web extends PlainWeb {
 
     function get() {
-        $d = View::load('dressing', $this->params);
-        $d->center = $d->fetch($this->params['view']);
-        $d->display();
+        $view = View::load($this->params['view'], $this->params);
+        $layout = View::load('layout', $this->params);
+        $layout->meta = $view->getMeta();
+        $layout->center = $view->get();
+        $layout->display();
     }
 
 }
