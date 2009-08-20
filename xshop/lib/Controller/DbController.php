@@ -1,5 +1,6 @@
 <?php
 
+require_once(dirname(__file__).'/../Util/Auth.php');
 require_once(dirname(__file__).'/Controller.php');
 
 class DbController extends Controller {
@@ -21,16 +22,15 @@ class DbController extends Controller {
 
     // Mandatory params for put operations
     var $put = array(); //'name', 'example_name');
-
+    
     // Mandatory params for delete operations
     var $delete = array(); //'name', 'example_name');
 
     // Response returned fields from table
     var $return = array('id', 'name');
 
-    var $order = null; //'ASC';
-
     var $orderBy = null; //'id';
+    var $order = null; //'ASC';
 
     var $dsn = null;
 
@@ -49,19 +49,28 @@ class DbController extends Controller {
         return $this->query($sql);
     }
 
+    function post() {
+        // 201 Created or 304 Not Modified or 409 Conflict
+        // Ensures for mandatory fields presence
+        if (array_intersect($this->put, array_keys($this->params)) != $this->put)
+            throw new Exception("Missing mandatory params for put action");
+        // Starts sql generation
+        $updates = array();
+        foreach ($this->getFieldsValues(false) as $field => $valueh) {
+            $updates[] = "{$field} = '{$valueh['value']}'";
+        }
+        // Creates final sql
+        $sql = "UPDATE {$this->maintable} SET";
+        $sql .= implode(', ', $updates);
+        $sql .= $this->getSqlWhere();
+        return $this->query($sql);        
+    }
+
     function put() {
         // 201 Created or 304 Not Modified or 409 Conflict
         // Ensures for mandatory fields presence
         if (array_intersect($this->put, array_keys($this->params)) != $this->put)
             throw new Exception("Missing mandatory params for put action");
-        // Sets NULL for any unspecified fields
-        /*
-        foreach($this->mapping as $param => $field) {
-            $field = is_array($field) ? $field[0] : $field;
-            if (array_key_exists($field, $fieldsValues)) continue;
-            $fieldsValues[$field] = 'NULL';
-        }
-        */
         // Starts sql generation
         $fieldsValues = $this->getFieldsValues(false);
         $sqlF = $sqlV = array();
@@ -77,9 +86,9 @@ class DbController extends Controller {
 
     function delete() {
         // 404 Not Found or 200 OK (default)
-        // Ensures for mandatory fields presence
+        // Ensures mandatory fields presence
         if (array_intersect($this->delete, array_keys($this->params)) != $this->delete)
-            throw new Exception("Missing mandatory params for put action");
+            throw new Exception("Missing mandatory params for delete action");
         // Starts sql generation
         $sql = "DELETE FROM {$this->maintable}" .
             $this->getSqlWhere(false);
@@ -104,12 +113,12 @@ class DbController extends Controller {
             if (!array_key_exists($paramname, $this->mapping)) continue;
             $field = $this->mapping[$paramname];
             $value = $usePatterns && array_key_exists($paramname, $this->filters) ?
-            // applying filter pattern to value
-            str_replace(
-                $field,                // replaces field name
-                $paramvalue,           // by param value
-                $this->filters[$field] // in field pattern
-            ) : $paramvalue;
+                // applying filter pattern to value
+                str_replace(
+                    $field,                // replaces field name
+                    $paramvalue,           // by param value
+                    $this->filters[$field] // in field pattern
+                ) : $paramvalue;
             $mapping[$field] = array(
                 value => $value,
                 wildcard => $value !== $paramvalue

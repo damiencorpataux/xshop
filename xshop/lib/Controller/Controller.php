@@ -17,13 +17,13 @@ class Controller {
     }
 
     function handleRest() {
-        // if not auth correctly: 401 Unauthorized
         switch ($_SERVER['REQUEST_METHOD']) {
             case 'GET':
                 $result = $this->get();
             break;
-            case 'PUT':
             case 'POST':
+                $result = $this->post();
+            case 'PUT':
                 $result = $this->put();
             break;
             case 'DELETE':
@@ -36,10 +36,16 @@ class Controller {
         }
     }
 
+    // select
     function get() {}
 
+    // insert
+    function post() {}
+
+    // update
     function put() {}
 
+    // delete
     function delete() {}
 }
 
