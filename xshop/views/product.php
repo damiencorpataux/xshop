@@ -4,13 +4,19 @@ require_once(dirname(__file__).'/../controllers/products.php');
 
 class product extends View {
 
-    function handle() {
+    function __construct($params = array()) {
+        parent::__construct($params);
         $c = new products($this->params);
-        $products = $c->get();
-        
+        $this->product = array_shift($c->get());
+    }
+
+    function handle() {
         $t = new Template('product.tpl');
-        $t->a('product', array_shift($products));
+        $t->a('product', $this->product);
         $this->b($t->apply());
+    }
+
+    function getMeta() {
     }
 }
 

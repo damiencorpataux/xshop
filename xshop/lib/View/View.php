@@ -23,13 +23,6 @@ class View {
     }
 
     /*
-     * Returns the string display of the given view name
-     */
-    function fetch($name, $params = null) {
-        return $this->load($name, $params ? $params : $this->params)->get();
-    }
-
-    /*
      * Loads a view
      */
     static function load($name, $params = array()) {
@@ -40,12 +33,23 @@ class View {
     }
 
     /*
+     * Returns the string display of the given view name
+     */
+    function fetch($name, $params = null) {
+        return $this->load($name, $params ? $params : $this->params)->get();
+    }
+
+    /*
      * Buffers a string
      * Takes an arbitrary number of string params
      */
     function b($string) {
         $args = func_get_args();
         foreach($args as $arg) $this->buffer .= $arg;
+    }
+
+    function getMeta() {
+        return array();
     }
 
     /*

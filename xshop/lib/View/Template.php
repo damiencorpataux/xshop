@@ -82,14 +82,15 @@ class Template {
     }
     function _applyvar($matches) {
         // TODO: implement string formatting (see Ext.Template & Ext.util.Format)
-        $phpvar = $this->_convert($matches[1]);
-        return "<?php if (isset({$phpvar})) print {$phpvar}; ?>";
+        $var = $matches[1];
+        $phpvar = $this->_convert($var);
+        return "<?php if (isset({$phpvar})) print {$phpvar} ?>";
     }
     function _applyif($matches) {
         $cond = $matches[1];
         $content = $matches[2];
         $phpcond = preg_replace_callback('/[a-zA-Z#]{1}[\.\w]*/', array($this, '_convert'), $cond);
-        return "<?php if ({$phpcond}) { ?> {$content} <?php } ?>";
+        return "<?php if ({$phpcond}) { ?>{$content}<?php } ?>";
     }
     function _applyfor($matches) {
         // NOTE: cannot look through object members
@@ -100,7 +101,7 @@ class Template {
         // prefixes
         // TODO: handle parent.key as in ext
         $content = preg_replace('/{([^.#].*?)}/', '{'.$var.'.#.$1}', $content);
-        return "<?php foreach(is_array($phpvar) ? $phpvar : array() as \$k => \$v) { ?> {$content} <?php } ?>";
+        return "<?php foreach(is_array($phpvar) ? $phpvar : array() as \$k => \$v) { ?>{$content}<?php } ?>";
     }
 }
 

@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <html>
   <head>
-    <title>Next shop</title>
+    <title>
+        Next shop
+        <tpl if="meta.title">-</tpl>
+        {meta.title}
+    </title>
     <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
-    <link rel="stylesheet" href="/shop/css/main.css" type="text/css" />
-    <script type="text/javascript" src="/shop/js/lib/ext-core/ext-core.js"></script>
-    <script type="text/javascript" src="/shop/js/lib/xshop/core.js"></script>
+    <tpl for="meta.scripts">
+        <script type="text/javascript" src="{.}"></script>
+    </tpl>
+    <link rel="stylesheet" href="/shop/css/main.css" type="text/css"/>
   </head>
   <body>
     <div id="wrapper">
       <div id="header">
-        <img src="/shop/assets/layout/logo.jpg" style="float:left; height:75px;">
+        <img src="/shop/assets/layout/logo.jpg" style="float:left; height:75px;"/>
         <div class="text">Next shop</div>
         <div class="motto">Think simple</div>
         <div style="clear:both"></div>

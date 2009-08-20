@@ -1,11 +1,19 @@
 <?php
 
-class dressing extends View {
+class layout extends View {
 
     var $menu = 'Categories here';
     var $center = 'Center html';
     var $related = 'Related contents';
-    var $meta = array();
+    var $meta = array(
+        title => '',
+        keywords => '',
+        author => '',
+        scripts => array(
+            '/shop/js/lib/ext-core/ext-core.js',
+            '/shop/js/lib/xshop/core.js'
+        )
+    );
 
     function handle() {
         $t = new Template('layout.tpl');

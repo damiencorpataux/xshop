@@ -124,7 +124,7 @@ class Router {
             if (isset($_GET['debug'])) {
                 print
                     '<pre style="background-color:#fcc; border:2px dashed #e00; padding:10px; font-size:11px">' .
-                    '<h1>Unexpected error</h1>' .
+                    '<h1>Route error</h1>' .
                     $e .
                     '</pre>';
             }
