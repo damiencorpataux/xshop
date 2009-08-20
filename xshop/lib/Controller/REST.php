@@ -19,13 +19,16 @@ class REST extends Controller {
             return;
         }
         switch ($_SERVER['REQUEST_METHOD']) {
-            case 'GET':
+            case 'GET': // select
                 $this->handle($c->get());
             break;
-            case 'PUT':
+            case 'POST': // insert
+                $this->handle($c->post());
+            break;
+            case 'PUT': // update
                 $this->handle($c->put());
             break;
-            case 'DELETE':
+            case 'DELETE': // delete
                 $this->handle($c->delete());
             break;
             default:
@@ -48,6 +51,7 @@ class REST extends Controller {
     }
 
     function respond($item) {
+        // TODO: header mimetype to "application/json"
         print json_encode($item);
     }
 
