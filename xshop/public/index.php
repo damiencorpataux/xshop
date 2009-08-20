@@ -2,7 +2,6 @@
 
 session_start();
 require_once(dirname(__file__).'/../lib/Util/Config.php');
-
 require_once(dirname(__file__).'/../lib/Util/Route.php');
 $r = new Router();
 $r->add('/', array(redirect=>'/shop/web/'));
