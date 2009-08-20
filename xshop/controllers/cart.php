@@ -1,6 +1,6 @@
 <?php
 
-require_once(dirname(__file__).'/../lib/Util/Auth.php'); // TODO: do the auth stuff in cart view instead of cart controller? how to secure the userid?
+require_once(dirname(__file__).'/../lib/Util/Auth.php');
 require_once(dirname(__file__).'/../lib/Controller/DbController.php');
 require_once(dirname(__file__).'/order.php');
 
@@ -20,7 +20,6 @@ class cart extends DbController {
     );
 
     var $put = array('product');
-
     var $delete = array('order', 'product');
 
     var $return = array('*', 'price*quantity AS total');
