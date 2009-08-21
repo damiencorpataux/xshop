@@ -1,3 +1,3 @@
 [submodule "xshop/lib"]
 	path = xshop/lib
-	url = git://github.com/damiencorpataux/xs.git
+	url = git@github.com:damiencorpataux/xs.git
