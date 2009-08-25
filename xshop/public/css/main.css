@@ -106,13 +106,19 @@ blockquote:hover .source {
   opacity: 1;
 }
 
+form tr {
+  width: 100%;
+}
 form th {
   text-align: right;
   padding-right: 10px;
+  white-space: nowrap;
 }
 form td {
   text-align: left;
   padding-right: 10px;
+  /*white-space: nowrap;*/
+  overflow: hidden;
 }
 
 /**
@@ -248,8 +254,8 @@ position: relative;
   position: relative;
 }
 .wedge {
-  background-image: url(../img/wedges.gif);
-  background-position: 0 0;
+  background-image: url(img/wedges.gif);
+  background-position: left top;
   background-repeat: no-repeat;
   height: 8px;
   position: absolute;
@@ -260,4 +266,45 @@ position: relative;
   left: 10px;
   margin-top: -7px;
   top: 0;
+}
+
+.message {
+  margin: 0 0 10 0;
+  padding: 10 10 10 40 !important;
+}
+.tip {
+  border-color: transparent !important;
+  background-color: transparent !important;
+}
+.ok, .warning, .error, .info, .question {
+  background-position: 10 50%;
+  background-repeat: no-repeat;
+  padding: 5 10 5 35;
+  vertical-align: middle;
+  border: 1px solid #eee;
+}
+.ok {
+  background-image: url(img/icon-yes-small.gif);
+  background-color: #efe;
+  border-color: #8c8;
+}
+.warning {
+  background-image: url(img/icon-warning-small.gif);
+  background-color: #ffe;
+  border-color: #cc8;
+}
+.error {
+  background-image: url(img/icon-error-small.gif);
+  background-color: #fee;
+  border-color: #c88;
+}
+.info {
+  background-image: url(img/icon-info-small.gif);
+  background-color: #eef;
+  border-color: #88c;
+}
+.question {
+  background-image: url(img/icon-question-small.gif);
+  background-color: #eff;
+  border-color: #8cc;
 }

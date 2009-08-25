@@ -1,16 +1,70 @@
 <script>
-  Ext.onReady(function() {
-    // TODO: check availability only if typed email is valid
-    xs.util.typeout('email', xs.util.validator.rest);
-  });
+Ext.onReady(function() {
+    // checks email pattern validity
+    xs.validator.settip({
+        input: 'email',
+        fail: 'email_invalid',
+        //validator: xs.validator.email
+        validator: function(value) {
+            // FIXME: put this logc in settip() and make it activable through an option (e,g verbose:false)
+            var valid = xs.validator.email(value);            
+            if (valid) this.validonce = true;
+            return !this.validonce || valid;
+        },
+        verbose: false
+    });
+    // checks email availability
+    xs.validator.settip({
+        input: 'email',
+        pass: 'email_available',
+        validator: function(value) {
+            return xs.validator.email(value) && true
+        }
+    });
+    // checks email pattern validity
+    xs.validator.settip({
+        input: 'email',
+        pass: 'email_unavailable',
+        validator: function(value) {
+            return xs.validator.email(value) && !true
+        }
+    });
+/*
+// FIXME: use this settip options object for more flexibility at once:
+[
+    {validator: function(value) {}, show: ['id1'], hide: ['id2']}
+]
+more complex:
+[{
+    validator: function(value) {},
+    show: ['email_available']
+}, {
+    
+}]
+*/
+    // checks passwords match
+    xs.validator.settip({
+        input: ['password', 'passconfirm'],
+        fail: ['passconfirm_error'],
+        validator: function() {
+            return Ext.get('password').getValue() == Ext.get('passconfirm').getValue();
+        }
+    });
+
+});
 </script>
+
+
 <h1>Inscription</h1>
+
+<div class="error message" style="display:{error}">
+  Formulaire invalide
+</div>
+
 <p>S'inscrire? En un clin d'oeil! Votre adresse vous sera demandée lors
 de votre première commande.</p>
 
-<div style="display:{error};color:#a00">
-  Formulaire invalide
-</div>
+<div id="form"></div>
 <form action="2" method="POST">
 <table>
   <!--
@@ -41,6 +95,9 @@ de votre première commande.</p>
     <th><label for="email">E-mail</label>*</th>
     <td>
       <input type="text" name="email" id="email">
+      <span id="email_invalid" class="warning tip">Email incomplet</span>
+      <span id="email_unavailable" class="error tip">Email déjà pris</span>
+      <span id="email_available" class="ok tip">Email disponible</span>
     </td>
   </tr>
   <tr>
@@ -53,6 +110,7 @@ de votre première commande.</p>
     <th><label for="passconfirm">Confirmer le mot de passe</label>*</th>
     <td>
       <input type="password" name="passconfirm" id="passconfirm">
+      <span id="passconfirm_error" class="error tip">Vérifiez votre mot de passe</span>
     </td>
   </tr>
   <tr>
@@ -66,6 +124,7 @@ de votre première commande.</p>
   <tr>
     <th>&nbsp;</th>
     <td>
+      <br/>
       <input type="submit" name="" value="Bienvenue">
       <br/>
       <a href="/shop/web/">Abandonner l'inscription</a>
