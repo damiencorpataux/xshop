@@ -12,7 +12,7 @@
   <a href="{lastpage}?{_q}">{lastpage}</a>
   .
 </div>
-
+<br/>
 <br/>
 {products}
 {n} produits sur {ntotal}
