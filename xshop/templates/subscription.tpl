@@ -110,7 +110,7 @@ de votre première commande.</p>
     <th><label for="passconfirm">Confirmer le mot de passe</label>*</th>
     <td>
       <input type="password" name="passconfirm" id="passconfirm">
-      <span id="passconfirm_error" class="error tip">Vérifiez votre mot de passe</span>
+      <span id="passconfirm_error" class="error tip">Les mots de passe ne correspondent pas</span>
     </td>
   </tr>
   <tr>

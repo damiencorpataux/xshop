@@ -18,6 +18,20 @@ xs.util.update = function(nodeid, url) {
     el.load(url)./*fadeOut(f).*/fadeIn(f);
     // TODO: disable link during update & make a spinner or mouse waiting icon
 }
+xs.util.arrize = function(value) {
+    // use arguments to concat non-null values and arrays and return a consitant array
+    if (value instanceof Array) return value
+    else return [value];
+}
+xs.util.display = function(el, visible) {
+    if (el = Ext.get(el)) return el.setVisibilityMode(Ext.Element.DISPLAY).setVisible(visible);
+}
+xs.util.show = function(el) {
+    xs.util.display(el, true);
+}
+xs.util.hide = function(el) {
+    xs.util.display(el, false);
+}
 xs.util.typeout = function(inputid, callback, options) {
     var options = Ext.apply({
         event: 'keyup',
@@ -26,7 +40,8 @@ xs.util.typeout = function(inputid, callback, options) {
         empathy: false,
         minchar: 0
     }, options);
-    var el = Ext.get(inputid);
+    // FIXME: had to arrize inputid to attach multiple typeouts to the same element
+    var el = Ext.get(xs.util.arrize(inputid));
     if (!el) return;
     el.on(options.event, function(ev, el, options) {
         if (ev.button >= 32 && ev.button <= 39) return;
@@ -35,7 +50,7 @@ xs.util.typeout = function(inputid, callback, options) {
         if (options.empathy) {
             this.diff = (new Date().getTime() - this.lasttime) || timeout;
             this.lasttime = new Date().getTime();
-            timeout = this.diff < 2500 ? this.diff : timeout;
+            timeout = this.diff < 1000 ? this.diff : timeout;
         }
         // calls latest event callback
         if (this.getValue().length < options.minchar) return;
@@ -43,19 +58,32 @@ xs.util.typeout = function(inputid, callback, options) {
         if (!this.task) this.task = new Ext.util.DelayedTask(callback, this);
         else this.task.cancel();
         this.task.delay(timeout);
-    }, null, options);
+    }, el, options);
 }
 
 Ext.namespace('xs.validator');
-xs.validator.seterror = function(inputid, isvalid) {
-console.log(isvalid);
-    var el;
-    if (el = Ext.get(inputid + "_ok")) el.setVisibilityMode(Ext.Element.DISPLAY).setVisible(isvalid);
-    if (el = Ext.get(inputid + "_error")) el.setVisibilityMode(Ext.Element.DISPLAY).setVisible(!isvalid);
+xs.validator.settip = function(options) {
+    // TODOS:
+    /// accept an array of options
+    /// accept array in options.pass and options.fail
+    var options = Ext.apply({}, options);
+    options.pass = xs.util.arrize(options.pass);
+    options.fail = xs.util.arrize(options.fail);
+    // hide tips
+    Ext.each(options.pass.concat(options.fail), function(e) {
+        xs.util.hide(e);
+    })
+    // bind listener to options.input field
+    xs.util.typeout(options.input, function() {
+        // call options.validator to test is valid
+        var pass = options.validator(Ext.get(options.input).getValue());
+        for (var j=0; j<options.pass.length; j++) xs.util.display(options.pass[j], pass);
+        for (var j=0; j<options.fail.length; j++) xs.util.display(options.fail[j], !pass);
+    }, {empathy: true});
 }
-xs.validator.email = function(inputid) {
+xs.validator.email = function(value) {
     this.emailRE = this.emailRE || new RegExp(/^[^\s]+?@[^\s]+?\.[\w]{2,5}$/);
-    var matches = this.emailRE.exec(Ext.get(inputid).getValue());
+    var matches = this.emailRE.exec(value);
     return matches ? true : false;
 }
 xs.validator.rest = function(url, inputid, options) {
